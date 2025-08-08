@@ -23,5 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($e instanceof \App\Exceptions\NoResourcesException) {
                 return ResponseHelper::error(message: 'there is no resouce', code: 203);
             }
+
+            if ($e instanceof \App\Exceptions\NotFoundException) {
+                return ResponseHelper::error(message:  $e->getMessage() ?: 'Not Found', code: 404);
+            }
         });
     })->create();

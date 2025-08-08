@@ -14,6 +14,9 @@ class ElderlyPerson extends Model
         'date_of_birth',
         'gender',
         'room_id',
+        'image',
+        'login_at',
+        'caregiver_id'
     ];
 
 
