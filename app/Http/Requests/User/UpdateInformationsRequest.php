@@ -15,9 +15,13 @@ class UpdateInformationsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'string'],
+            'name' => ['nullable'],
             'email' => ['nullable', 'email'],
-            'phone' => ['nullable']
+            'image' => ['nullable', 'image'],
+            'phone' => [
+                'nullable',
+                'regex:/^(?:\+|00)[1-9]\d{7,14}$/',
+            ],
         ];
     }
 }

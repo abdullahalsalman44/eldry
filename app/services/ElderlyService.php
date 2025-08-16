@@ -6,6 +6,7 @@ use App\Exceptions\NotFoundException;
 use App\Models\ElderlyPerson;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ElderlyService
 {
@@ -63,14 +64,34 @@ class ElderlyService
     public function show($id)
     {
         $eldery = ElderlyPerson::query()
-        ->with('room')
-        ->find($id);
+            ->with('room')
+            ->find($id);
 
         if ($eldery == null) {
             throw new NotFoundException('Eldery Not Found');
         }
 
         return $eldery;
+    }
+
+    public function update(array $data, $id)
+    {
+        $eldery = ElderlyPerson::query()->find($id);
+
+        if ($eldery == null) {
+            throw new NotFoundException('Eldery Not Found', 404);
+        }
+
+        if (array_key_exists('image', $data)) {
+            if ($eldery->image != null && Storage::exists($eldery->image)) {
+                Storage::delete($eldery->image);
+            }
+            $data['image'] = upload_file($data['image'], 'Eldery');
+        }
+
+        $eldery->update($data);
+
+        return true;
     }
 
     public function delete($id)

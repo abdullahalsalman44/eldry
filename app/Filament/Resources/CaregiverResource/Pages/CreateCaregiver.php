@@ -11,9 +11,8 @@ class CreateCaregiver extends CreateRecord
     protected static string $resource = CaregiverResource::class;
 
     protected function mutateFormDataBeforeCreate(array $data): array
-{
-    $data['role'] = 'caregiver';
-    return $data;
-}
-
+    {
+        $data['role'] = 'caregiver';
+        return $data;
+    }
 }

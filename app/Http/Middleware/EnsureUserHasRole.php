@@ -18,7 +18,6 @@ class EnsureUserHasRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        Log::info($role);
         if (!$request->user()->hasRole($role)) {
             return ResponseHelper::error(message: 'UnAuthorized', code: 401);
         }

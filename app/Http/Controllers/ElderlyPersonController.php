@@ -33,6 +33,9 @@ class ElderlyPersonController extends Controller
         return $this->messageSuccessResponse('eldery created successfully');
     }
 
+    public function update(Request $request, $id) {}
+
+
     public function show($id)
     {
         $eldery = $this->elderlyPerson->show($id);
@@ -40,7 +43,6 @@ class ElderlyPersonController extends Controller
         return $this->successResponse($eldery);
     }
 
-    public function update($id, Request $request) {}
 
     public function destroy($id) {}
 }

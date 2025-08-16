@@ -16,11 +16,12 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
+
 class CaregiverResource extends Resource
 {
-//protected static ?string $navigationGroup = 'إدارة الموظفين';
-protected static ?string $navigationLabel = 'Caregiver';
-protected static ?string $model = \App\Models\User::class;
+    //protected static ?string $navigationGroup = 'إدارة الموظفين';
+    protected static ?string $navigationLabel = 'Caregiver';
+    protected static ?string $model = \App\Models\User::class;
 
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -29,9 +30,9 @@ protected static ?string $model = \App\Models\User::class;
 
 
     public static function query(): Builder
-{
-    return parent::query()->where('role', 'caregiver');
-}
+    {
+        return parent::query()->where('role', 'caregiver');
+    }
 
     public static function form(Form $form): Form
     {
@@ -44,13 +45,13 @@ protected static ?string $model = \App\Models\User::class;
                 TextInput::make('phone')->label('رقم الهاتف')->nullable(),
                 Toggle::make('active')->label('الحساب مفعل؟')->default(true),
                 TextInput::make('password')
-                ->label('كلمة المرور')
-                ->password()
-                ->minLength(8)
-                ->nullable()
-                ->required(fn (string $context) => $context === 'create')
-                ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
-                ->dehydrated(fn ($state) => filled($state)),
+                    ->label('كلمة المرور')
+                    ->password()
+                    ->minLength(8)
+                    ->nullable()
+                    ->required(fn(string $context) => $context === 'create')
+                    ->dehydrateStateUsing(fn($state) => filled($state) ? bcrypt($state) : null)
+                    ->dehydrated(fn($state) => filled($state)),
 
             ]);
     }
@@ -59,11 +60,11 @@ protected static ?string $model = \App\Models\User::class;
     {
         return $table
             ->columns([
-            TextColumn::make('name')->label('الاسم'),
-            TextColumn::make('email')->label('البريد الإلكتروني'),
-            TextColumn::make('phone')->label('رقم الهاتف'),
-            IconColumn::make('active')->boolean()->label('الحساب مفعل؟'),
-            TextColumn::make('created_at')->label('تاريخ الإنشاء')->date()
+                TextColumn::make('name')->label('الاسم'),
+                TextColumn::make('email')->label('البريد الإلكتروني'),
+                TextColumn::make('phone')->label('رقم الهاتف'),
+                IconColumn::make('active')->boolean()->label('الحساب مفعل؟'),
+                TextColumn::make('created_at')->label('تاريخ الإنشاء')->date()
 
             ])
             ->filters([
@@ -97,11 +98,9 @@ protected static ?string $model = \App\Models\User::class;
 
 
 
-public static function mutateFormDataBeforeSave(array $data): array
-{
-    $data['role'] = 'caregiver';
-    return $data;
-}
-
-
+    public static function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['role'] = 'caregiver';
+        return $data;
+    }
 }

@@ -18,6 +18,9 @@ Route::post('/login', [AuthController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('logout', [AuthController::class, 'logout']);
+
     Route::prefix('family')->group(function () {
         Route::get('/my-elderly', [FamilyController::class, 'myElderly']);
         Route::get('/elderly/{id}/daily-reports', [FamilyController::class, 'showDailyReports']);
@@ -30,17 +33,15 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('caregiver')->group(function () {
-        Route::post('create', [CareGiverController::class, 'create']);
-        Route::middleware(['auth:sanctum'])->group(function () {
-            Route::put('update', [CareGiverController::class, 'update'])->middleware(['role:caregiver']);
-            Route::get('get_eldries', [CareGiverController::class, 'getListOfEldries']);
-        });
+        Route::post('create', [CareGiverController::class, 'create'])->middleware(['role:admin']);
+        Route::post('update', [CareGiverController::class, 'update'])->middleware(['role:caregiver|admin']);
+        Route::get('get_eldries', [CareGiverController::class, 'getListOfEldries']);
     });
 
     Route::prefix('eldery')->middleware('auth:sanctum')->group(function () {
         Route::get('index', [ElderlyPersonController::class, 'index']);
+        Route::post('eldery/create', [ElderlyPersonController::class, 'create'])->middleware(['role:admin']);
         Route::get('show/{id}', [ElderlyPersonController::class, 'show']);
+        Route::post('update/{id}', [ElderlyPersonController::class, 'update'])->middleware(['role:admin']);
     });
 });
-
-Route::post('eldery/create', [ElderlyPersonController::class, 'create']);

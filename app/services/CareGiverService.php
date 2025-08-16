@@ -9,7 +9,9 @@ use Exception;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
 class CareGiverService
@@ -57,6 +59,13 @@ class CareGiverService
             $user = User::query()->find($user->id);
             if (!$user) {
                 throw new Exception('user not exists', 404);
+            }
+
+            if (array_key_exists('image', $data)) {
+                if ($user->image != null) {
+                    File::delete('storage/' . $user->image);
+                }
+                $data['image'] = upload_file($data['image'], 'caregievers');
             }
 
             $user->update($data);
