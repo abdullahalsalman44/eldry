@@ -7,6 +7,7 @@ use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use App\Models\User;
 use App\Models\Notification;
+
 class CreateEvent extends CreateRecord
 {
     protected static string $resource = EventResource::class;
@@ -14,9 +15,8 @@ class CreateEvent extends CreateRecord
     protected function afterCreate(): void
     {
         $event = $this->record;
-
         $users = collect(); // مجموعة المستخدمين المستهدفين
-
+        dd($event);
         // حدد المستلمين بناءً على نوع الفئة
         switch ($event->target_type) {
             case 'doctor':
@@ -35,6 +35,8 @@ class CreateEvent extends CreateRecord
                     })->get();
                 }
                 break;
+
+            // case ''
 
             case 'all':
                 $users = User::all();

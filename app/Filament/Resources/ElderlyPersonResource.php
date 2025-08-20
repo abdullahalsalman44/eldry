@@ -52,9 +52,27 @@ class ElderlyPersonResource extends Resource
                         ->relationship('room', 'number')
                         ->options(
                             \App\Models\Room::withCount('elderlyPeople')->get()
-                                ->filter(fn ($room) => $room->elderly_people_count < $room->capacity)
+                                ->filter(fn($room) => $room->elderly_people_count < $room->capacity)
                                 ->pluck('number', 'id')
                         )
+                        ->required(),
+
+                    DatePicker::make('login_at')
+                        ->label('تاريخ الدخول')
+                        ->default(now())
+                        ->required(),
+
+                    Select::make('family_id')
+                        ->label('العائلة')
+                        ->relationship(
+                            name: 'family',
+                            titleAttribute: 'name',
+                            modifyQueryUsing: function ($query) {
+                                $query->role('family');
+                            }
+                        )
+                        ->searchable()
+                        ->preload()
                         ->required(),
                 ])
             ]);
@@ -65,34 +83,34 @@ class ElderlyPersonResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('full_name')
-                ->label('الاسم الكامل')
-                ->searchable()
-                ->sortable(),
+                    ->label('الاسم الكامل')
+                    ->searchable()
+                    ->sortable(),
 
-            TextColumn::make('date_of_birth')
-                ->label('تاريخ الميلاد')
-                ->date(),
+                TextColumn::make('date_of_birth')
+                    ->label('تاريخ الميلاد')
+                    ->date(),
 
-            TextColumn::make('gender')
-                ->label('الجنس')
-                ->badge()
-                ->formatStateUsing(fn (string $state) => $state === 'male' ? 'ذكر' : 'أنثى')
-                ->color(fn (string $state) => $state === 'male' ? 'primary' : 'pink'),
+                TextColumn::make('gender')
+                    ->label('الجنس')
+                    ->badge()
+                    ->formatStateUsing(fn(string $state) => $state === 'male' ? 'ذكر' : 'أنثى')
+                    ->color(fn(string $state) => $state === 'male' ? 'primary' : 'pink'),
 
-            TextColumn::make('room.number')
-                ->label('رقم الغرفة'),
+                TextColumn::make('room.number')
+                    ->label('رقم الغرفة'),
             ])
             ->filters([
                 SelectFilter::make('gender')
-                ->label('الجنس')
-                ->options([
-                    'male' => 'ذكر',
-                    'female' => 'أنثى',
-                ]),
+                    ->label('الجنس')
+                    ->options([
+                        'male' => 'ذكر',
+                        'female' => 'أنثى',
+                    ]),
 
-            SelectFilter::make('room_id')
-                ->label('الغرفة')
-                ->relationship('room', 'number'),
+                SelectFilter::make('room_id')
+                    ->label('الغرفة')
+                    ->relationship('room', 'number'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

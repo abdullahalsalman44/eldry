@@ -16,7 +16,8 @@ class ElderlyPerson extends Model
         'room_id',
         'image',
         'login_at',
-        'caregiver_id'
+        'caregiver_id',
+        'family_id',
     ];
 
 
@@ -84,5 +85,10 @@ class ElderlyPerson extends Model
     public function inquiries()
     {
         return $this->hasMany(Inquiry::class, 'elderly_id');
+    }
+
+    public function family(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'family_id');
     }
 }

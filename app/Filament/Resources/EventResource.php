@@ -19,6 +19,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+
 class EventResource extends Resource
 {
     protected static ?string $model = Event::class;
@@ -29,14 +30,24 @@ class EventResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')->label('عنوان الحدث')->required(),
-                DatePicker::make('date')->label('تاريخ الحدث')->required(),
-                Textarea::make('description')->label('الوصف')->required(),
+                TextInput::make('title')
+                    ->label('عنوان الحدث')
+                    ->required(),
+
+                DatePicker::make('date')
+                    ->label('تاريخ الحدث')
+                    ->required(),
+
+                Textarea::make('description')
+                    ->label('الوصف')
+                    ->required(),
+
                 FileUpload::make('image_url')
                     ->label('صورة الحدث')
                     ->image()
                     ->directory('events')
                     ->nullable(),
+
                 Select::make('target_type')
                     ->label('الفئة المستهدفة')
                     ->options([
@@ -45,11 +56,13 @@ class EventResource extends Resource
                         'resident' => 'مقيم معيّن',
                         'all' => 'الجميع',
                     ])
-                    ->required(),
+                    ->required()
+                    ->reactive(), // ✅ لازم
+
                 Select::make('elderly_id')
                     ->label('المقيم (عند الحاجة)')
                     ->relationship('elderly', 'full_name')
-                    ->visible(fn ($get) => $get('target_type') === 'resident')
+                    ->visible(fn($get) => $get('target_type') === 'resident')
                     ->nullable(),
             ]);
     }
@@ -65,13 +78,13 @@ class EventResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('target_type')
-                ->label('الفئة المستهدفة')
-                ->options([
-                    'doctor' => 'أطباء',
-                    'caregiver' => 'مقدمو الرعاية',
-                    'resident' => 'مقيم',
-                    'all' => 'الجميع',
-                ]),
+                    ->label('الفئة المستهدفة')
+                    ->options([
+                        'doctor' => 'أطباء',
+                        'caregiver' => 'مقدمو الرعاية',
+                        'resident' => 'مقيم',
+                        'all' => 'الجميع',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

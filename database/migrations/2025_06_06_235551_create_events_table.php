@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('image_url')->nullable();
             $table->enum('target_type', ['doctor', 'caregiver', 'resident', 'all'])->default('all');
-            $table->foreignId('elderly_id')->nullable()->constrained('elderly_people')->onDelete('set null');
+            $table->foreignId('elderly_id')->nullable()->constrained('elderly_people')->onDelete('set null');   
             $table->timestamps();
         });
     }

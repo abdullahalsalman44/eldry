@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('date_of_birth');
             $table->enum('gender', ['male', 'female']);
             $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
-            $table->foreignId('caregiver_id')->nullable()->constrained('elderly_people');
+            $table->foreignId('caregiver_id')->nullable()->constrained('users');
             $table->date('login_at');
             $table->string('image')->nullable();
             $table->timestamps();

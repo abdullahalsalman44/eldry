@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\FamilyController;
 use App\Http\Controllers\CareGiverController;
 use App\Http\Controllers\ElderlyPersonController;
+use App\Http\Controllers\EventController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureUserHasRole;
@@ -38,10 +39,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('get_eldries', [CareGiverController::class, 'getListOfEldries']);
     });
 
-    Route::prefix('eldery')->middleware('auth:sanctum')->group(function () {
+    Route::prefix('eldery')->group(function () {
         Route::get('index', [ElderlyPersonController::class, 'index']);
         Route::post('eldery/create', [ElderlyPersonController::class, 'create'])->middleware(['role:admin']);
         Route::get('show/{id}', [ElderlyPersonController::class, 'show']);
         Route::post('update/{id}', [ElderlyPersonController::class, 'update'])->middleware(['role:admin']);
+    });
+
+    Route::prefix('event')->group(function () {
+        Route::get('index', [EventController::class, 'index']);
+        Route::get('show/{id}', [EventController::class, 'show']);
     });
 });

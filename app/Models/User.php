@@ -29,7 +29,7 @@ class User extends Authenticatable
         'role',
         'phone',
         'active',
-        'image'
+        'image',
     ];
 
     /**
@@ -117,6 +117,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Payment::class, 'paid_by');
     }
+
+    public function elderlies(): HasMany
+    {
+        return $this->hasMany(ElderlyPerson::class, 'family_id');
+    }
+
     protected static function booted()
     {
         static::created(function ($user) {
