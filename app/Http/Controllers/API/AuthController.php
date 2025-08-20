@@ -44,6 +44,12 @@ class AuthController extends Controller
         ]);
     }
 
+    public function me()
+    {
+        $user = Auth::user();
+        return $this->successResponse($user);
+    }
+
     public function logout()
     {
         $user = Auth::user();

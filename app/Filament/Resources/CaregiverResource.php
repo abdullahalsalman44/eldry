@@ -2,20 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CaregiverResource\Pages;
-use App\Filament\Resources\CaregiverResource\RelationManagers;
-use App\Models\Caregiver;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Caregiver;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\TextInput;
+use Filament\Resources\Resource;
 use Filament\Forms\Components\Toggle;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\CaregiverResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CaregiverResource\RelationManagers;
 
 class CaregiverResource extends Resource
 {
@@ -36,14 +37,11 @@ class CaregiverResource extends Resource
 
     public static function form(Form $form): Form
     {
-
-
         return $form
             ->schema([
                 TextInput::make('name')->label('الاسم')->required(),
                 TextInput::make('email')->label('البريد الإلكتروني')->email()->required(),
                 TextInput::make('phone')->label('رقم الهاتف')->nullable(),
-                Toggle::make('active')->label('الحساب مفعل؟')->default(true),
                 TextInput::make('password')
                     ->label('كلمة المرور')
                     ->password()
@@ -52,7 +50,14 @@ class CaregiverResource extends Resource
                     ->required(fn(string $context) => $context === 'create')
                     ->dehydrateStateUsing(fn($state) => filled($state) ? bcrypt($state) : null)
                     ->dehydrated(fn($state) => filled($state)),
-
+                FileUpload::make('image')
+                    ->label('الصورة')
+                    ->image()
+                    ->directory('caregiver')
+                    ->visibility('public')
+                    ->maxSize(2048)
+                    ->nullable(),
+                Toggle::make('active')->label('الحساب مفعل؟')->default(true),
             ]);
     }
 
