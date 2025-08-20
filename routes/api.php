@@ -19,7 +19,6 @@ Route::post('/login', [AuthController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
-
     Route::get('logout', [AuthController::class, 'logout']);
 
     Route::prefix('family')->group(function () {
@@ -45,7 +44,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('show/{id}', [ElderlyPersonController::class, 'show']);
         Route::post('update/{id}', [ElderlyPersonController::class, 'update'])->middleware(['role:admin']);
     });
+});
 
+Route::middleware(['guest'])->group(function () {
     Route::prefix('event')->group(function () {
         Route::get('index', [EventController::class, 'index']);
         Route::get('show/{id}', [EventController::class, 'show']);
