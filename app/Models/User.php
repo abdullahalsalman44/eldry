@@ -123,6 +123,11 @@ class User extends Authenticatable
         return $this->hasMany(ElderlyPerson::class, 'family_id');
     }
 
+    public function categiverElderies(): HasMany
+    {
+        return $this->hasMany(ElderlyPerson::class, 'caregiver_id');
+    }
+
     protected static function booted()
     {
         static::created(function ($user) {

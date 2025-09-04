@@ -3,6 +3,7 @@
 namespace App\services;
 
 use App\Exceptions\NoResourcesException;
+use App\Models\ElderlyPerson;
 use App\Models\User;
 use App\Repository\BaseRepository;
 use Exception;
@@ -85,23 +86,10 @@ class CareGiverService
         }
     }
 
-    public function getListOfEldries($id = null)
+    public function getListOfEldries($page, $per_page)
     {
         $user = Auth::user();
-
-        if (!$user->hasRole('caregiver') && $id != null) {
-            $user = User::query()->find($id);
-        }
-
-        if (!$user->hasRole('caregiver')) {
-            throw new Exception('caregiver not found', 404);
-        }
-
-        $eldries = $user->elderlyPeople;
-
-        if ($eldries->count() == 0)
-            throw new NoResourcesException();
-
+        $eldries = ElderlyPerson::query()->where('caregiver_id', $user->id)->paginate($per_page);
         return $eldries;
     }
 
