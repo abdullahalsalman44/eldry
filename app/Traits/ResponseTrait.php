@@ -43,7 +43,7 @@ trait ResponseTrait
         return response()->json(['status' => true, 'message' => $message], $code);
     }
 
-    public function messageErrorResponse($message = 'success', $code = 5000)
+    public function messageErrorResponse($message = 'success', $code = 500)
     {
         return response()->json(['status' => false, 'message' => $message], $code);
     }
