@@ -18,6 +18,9 @@ class EmployeeController extends Controller
             ->when($request->role, function ($query) use ($request) {
                 $query->where('role', $request->role);
             })
+            ->when($request->search, function ($query) use ($request) {
+                $query->where('name', 'like', "%$request->search%");
+            })
             ->whereNot('role', 'family')
             ->whereNot('role', 'admin')
             ->paginate($request->per_page);
