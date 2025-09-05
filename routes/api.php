@@ -7,6 +7,7 @@ use App\Http\Controllers\ElderlyPersonController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\RateController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureUserHasRole;
@@ -47,6 +48,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('eldery/create', [ElderlyPersonController::class, 'create'])->middleware(['role:admin']);
         Route::get('show/{id}', [ElderlyPersonController::class, 'show']);
         Route::post('update/{id}', [ElderlyPersonController::class, 'update'])->middleware(['role:admin']);
+    });
+
+    Route::prefix('report')->group(function () {
+        Route::get('/', [ReportController::class, 'index']);
+        Route::post('/', [ReportController::class, 'store'])->middleware('role:caregiver');
     });
 
     Route::resource('rate', RateController::class)->only('index');

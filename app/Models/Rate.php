@@ -12,6 +12,8 @@ class Rate extends Model
         'name',
         'note',
         'rate',
+        'sleep_rate',
+        'take_shower'
     ];
 
     public function employee(): BelongsTo
