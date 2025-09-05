@@ -27,7 +27,7 @@ class RateController extends Controller
             $rates = Rate::query()->where('employee_id', $user->id);
         } else {
             $rates = Rate::query();
-        }
+        }   
         $rates = $rates->paginate($request->per_page);
         $rates->load('employee');
         $rates = RateResource::collection($rates);

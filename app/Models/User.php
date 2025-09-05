@@ -30,6 +30,7 @@ class User extends Authenticatable
         'phone',
         'active',
         'image',
+        'fcm_token',
     ];
 
     /**
@@ -126,6 +127,11 @@ class User extends Authenticatable
     public function categiverElderies(): HasMany
     {
         return $this->hasMany(ElderlyPerson::class, 'caregiver_id');
+    }
+
+    public function rates(): HasMany
+    {
+        return $this->hasMany(Rate::class, 'employee_id');
     }
 
     protected static function booted()

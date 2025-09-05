@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\FamilyController;
 use App\Http\Controllers\CareGiverController;
 use App\Http\Controllers\ElderlyPersonController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\RateController;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('me', [AuthController::class, 'me']);
     Route::get('logout', [AuthController::class, 'logout']);
+
 
     Route::prefix('family')->group(function () {
         Route::get('/my-elderly', [FamilyController::class, 'myElderly']);
@@ -55,6 +57,8 @@ Route::middleware(['guest'])->group(function () {
         Route::get('index', [EventController::class, 'index']);
         Route::get('show/{id}', [EventController::class, 'show']);
     });
+
+    Route::resource('employee', EmployeeController::class)->only('index');
 
     Route::resource('rate', RateController::class);
 });

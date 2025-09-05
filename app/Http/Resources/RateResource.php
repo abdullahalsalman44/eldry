@@ -15,10 +15,10 @@ class RateResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'note' => $this->note,
             'rate' => $this->rate,
-            'employee' => new UserResource($this->employee),
         ];
     }
 }

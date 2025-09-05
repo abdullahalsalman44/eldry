@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Traits\ResponseTrait;
@@ -18,7 +19,8 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'fcm_token' => 'nullable|string',
         ]);
 
         $user = User::where('email', $request->email)->first();
@@ -26,7 +28,8 @@ class AuthController extends Controller
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'بيانات الدخول غير صحيحة'], 401);
         }
-
+        $user->fcm_token = $request->fcm_token;
+        $user->save();
 
         // if ($user->role !== 'family') {
         //     return response()->json(['message' => 'غير مصرح لك بالدخول من هذا التطبيق'], 403);
@@ -47,7 +50,10 @@ class AuthController extends Controller
     public function me()
     {
         $user = Auth::user();
-        return $this->successResponse($user);
+        $user->load('rates');
+        return $this->successResponse(
+            new UserResource($user)
+        );
     }
 
     public function logout()
