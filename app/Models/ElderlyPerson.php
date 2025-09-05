@@ -51,10 +51,10 @@ class ElderlyPerson extends Model
         return $this->belongsTo(User::class, 'caregiver_id');
     }
 
-    public function dailyReports()
-    {
-        return $this->hasMany(Daily_report::class, 'elderly_id');
-    }
+    // public function dailyReports()
+    // {
+    //     return $this->hasMany(Daily_report::class, 'elderly_id');
+    // }
 
     public function meals()
     {

@@ -17,10 +17,14 @@ class ReportController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-
+        $report = null;
         if ($user->hasRole('family')) {
             $eldery = $user->elderlies->first();
-            $report = $eldery->reports->last();
+            $report = Report::query()
+                ->with(['eldery'])
+                ->where('eldery_id', $eldery->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
             return $this->successResponse(new ReportResource($report));
         }
 
@@ -36,7 +40,7 @@ class ReportController extends Controller
                 ->paginate($request->per_page);
         }
 
-        if ($user->hasRole('cregiver')) {
+        if ($user->hasRole('caregiver')) {
             $report = Report::query()
                 ->with(['eldery'])
                 ->when($request->eldery_id, function ($query) use ($request) {

@@ -6,6 +6,7 @@ use App\Enums\ApetitieEnum;
 use App\Enums\HealthEnum;
 use App\Enums\MoodEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Report extends Model
 {
@@ -23,4 +24,9 @@ class Report extends Model
         'health' => HealthEnum::class,
         'apetitie' => ApetitieEnum::class,
     ];
+
+    public function eldery(): BelongsTo
+    {
+        return $this->belongsTo(ElderlyPerson::class, 'eldery_id');
+    }
 }
