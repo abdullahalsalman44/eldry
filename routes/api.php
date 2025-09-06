@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\FamilyController;
 use App\Http\Controllers\CareGiverController;
+use App\Http\Controllers\DonationController;
 use App\Http\Controllers\ElderlyPersonController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EventController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureUserHasRole;
+use App\services\MyFatoorahService;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -67,4 +69,10 @@ Route::middleware(['guest'])->group(function () {
     Route::resource('employee', EmployeeController::class)->only('index');
 
     Route::resource('rate', RateController::class);
+
+    Route::prefix('donation')->group(function () {
+        Route::post('send', [DonationController::class, 'store']);
+        Route::get('callBack', [DonationController::class, 'success'])->name('donation.callback');
+    });
+    Route::post('SendPayment', [DonationController::class, 'store']);
 });

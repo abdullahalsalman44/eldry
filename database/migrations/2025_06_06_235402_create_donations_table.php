@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('donations', function (Blueprint $table) {
             $table->id();
             $table->string('donor_name');
+            $table->string('donor_email');
+            $table->string('donor_phone');
+            $table->string('invoice_id');
             $table->decimal('amount');
             $table->string('payment_method');
             $table->timestamps();

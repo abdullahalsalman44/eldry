@@ -34,5 +34,8 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'myfatoorah' => [
+        'base_url' => env('MYFATOORAH_URL'),
+        'token' => env('MYFATOORAH_TOKEN'),
+    ],
 ];
